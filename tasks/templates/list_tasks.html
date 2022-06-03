@@ -1,0 +1,46 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django CRUD</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Tasks</h1>
+        <form action="{% url 'create_task'%}" method="POST" class="field">
+            {% csrf_token %}
+            <div class="control">
+
+                <input type="text" name="title" placeholder="Write a title"><br>
+            </div>
+            <textarea name="description" rows="3" placeholder="Write a description"></textarea><br>
+            <button>Save</button>
+        </form>
+
+        {%for task in tasks%}
+        <div>
+            <h4>{{task.title}}</h4>
+            <p>{{task.description}}</p>
+            <form action="{% url 'delete_task' task.id%}" method="POST">
+                {% csrf_token %}
+
+                <button>Delete</button>
+            </form>
+        </div>
+        {% empty %}
+        <h1>No tasks yet</h1>
+        {% endfor %}
+
+    </div>
+
+</body>
+
+</html>
